@@ -12,12 +12,9 @@ namespace IBASEmployeeService.Controllers
         {
             _logger = logger;
         }
-
-
-        [HttpGet("GetEmployees")]
-        public IEnumerable<Employee> Get()
+        
+        private static List<Employee> _employees = new List<Employee>()
         {
-            var employees = new List<Employee>() {
             new Employee() {
                 Id = "21",
                 Name = "Mette Bangsbo",
@@ -81,17 +78,29 @@ namespace IBASEmployeeService.Controllers
                     Name = "Kantinen"
                 }
             },
-            new Employee() {
+            new Employee()
+            {
                 Id = "28",
                 Name = "John Doe",
                 Email = "jodo@ibas.dk",
-                Department = new Department() {
+                Department = new Department()
+                {
                     Id = 4,
                     Name = "Kantinen"
                 }
             }
-        };
-            return employees;
+        }; 
+        
+        [HttpGet("GetEmployees")] 
+        public IEnumerable<Employee> Get() 
+        { 
+            return _employees; 
+        }
+
+        [HttpGet("GetEmployeeByDepartmentId/{departmentId}")]
+        public IEnumerable<Employee> GetByDepartmentId(int departmentId)
+        {
+            return _employees.Where(e => e.Department?.Id == departmentId);
         }
     }
 
